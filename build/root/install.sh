@@ -83,6 +83,38 @@ if [[ ! -f "/root/puid" || ! -f "/root/pgid" || "\${previous_puid}" != "\${PUID}
 
 fi
 
+export MAX_BACKUPS=$(echo "${MAX_BACKUPS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${MAX_BACKUPS}" ]]; then
+	echo "[info] MAX_BACKUPS defined as '${MAX_BACKUPS}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] MAX_BACKUPS not defined,(via -e MAX_BACKUPS), defaulting to '10'" | ts '%Y-%m-%d %H:%M:%.S'
+	export MAX_BACKUPS="10"
+fi
+
+export JAVA_INITIAL_HEAP_SIZE=$(echo "${JAVA_INITIAL_HEAP_SIZE}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${JAVA_INITIAL_HEAP_SIZE}" ]]; then
+	echo "[info] JAVA_INITIAL_HEAP_SIZE defined as '${JAVA_INITIAL_HEAP_SIZE}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] JAVA_INITIAL_HEAP_SIZE not defined,(via -e JAVA_INITIAL_HEAP_SIZE), defaulting to '512M'" | ts '%Y-%m-%d %H:%M:%.S'
+	export JAVA_INITIAL_HEAP_SIZE="512M"
+fi
+
+export JAVA_MAX_HEAP_SIZE=$(echo "${JAVA_MAX_HEAP_SIZE}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${JAVA_MAX_HEAP_SIZE}" ]]; then
+	echo "[info] JAVA_MAX_HEAP_SIZE defined as '${JAVA_MAX_HEAP_SIZE}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] JAVA_MAX_HEAP_SIZE not defined,(via -e JAVA_MAX_HEAP_SIZE), defaulting to '1024M'" | ts '%Y-%m-%d %H:%M:%.S'
+	export MAX_BACKUPS="1024M"
+fi
+
+export JAVA_MAX_THREADS=$(echo "${JAVA_MAX_THREADS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${JAVA_MAX_THREADS}" ]]; then
+	echo "[info] JAVA_MAX_THREADS defined as '${JAVA_MAX_THREADS}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] JAVA_MAX_THREADS not defined,(via -e JAVA_MAX_THREADS), defaulting to '1'" | ts '%Y-%m-%d %H:%M:%.S'
+	export JAVA_MAX_THREADS="1"
+fi
+
 # write out current PUID and PGID to files in /root (used to compare on next run)
 echo "\${PUID}" > /root/puid
 echo "\${PGID}" > /root/pgid

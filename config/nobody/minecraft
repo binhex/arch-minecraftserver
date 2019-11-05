@@ -7,7 +7,7 @@
 SERVER_ROOT="/srv/minecraft"
 BACKUP_DEST="/srv/minecraft/backup"
 BACKUP_PATHS="world" # World paths separated by spaces relative to SERVER_ROOT
-KEEP_BACKUPS="10"
+KEEP_BACKUPS="${MAX_BACKUPS}"
 GAME_USER="nobody"
 MAIN_EXECUTABLE="minecraft_server.jar"
 SESSION_NAME="minecraft"
@@ -16,7 +16,7 @@ SESSION_NAME="minecraft"
 #  -Xms sets the intial heap size (must be a multiple of 1024 and greater than 2MB, no spaces!)
 #  -Xmx sets the maximum heap size (must be a multiple of 1024 and greater than 2MB, no spaces!)
 #  -XX:ParallelGCThreads defines the number of threads the server may use
-SERVER_START_CMD="java -Xms512M -Xmx1024M -XX:ParallelGCThreads=1 -jar './${MAIN_EXECUTABLE}' nogui"
+SERVER_START_CMD="java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} -jar './${MAIN_EXECUTABLE}' nogui"
 
 # System parameters for the actual game server
 # Describes whether a daemon process which stops the server if it is not used by a player

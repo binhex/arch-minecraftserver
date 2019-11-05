@@ -17,6 +17,10 @@ docker run -d \
     --name=<container name> \
     -v <path for config files>:/config \
     -v /etc/localtime:/etc/localtime:ro \
+    -e MAX_BACKUPS=<max number of minecraft backups> \
+    -e JAVA_INITIAL_HEAP_SIZE=<java initial heap size in megabytes> \
+    -e JAVA_MAX_HEAP_SIZE=<java max heap size in megabytes> \
+    -e JAVA_MAX_THREADS=<java max number of threads> \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
     -e PGID=<gid for user> \
@@ -32,6 +36,10 @@ docker run -d \
     --name=minecraft \
     -v /apps/docker/minecraft:/config \
     -v /etc/localtime:/etc/localtime:ro \
+    -e MAX_BACKUPS=10 \
+    -e JAVA_INITIAL_HEAP_SIZE=512M \
+    -e JAVA_MAX_HEAP_SIZE=1024M \
+    -e JAVA_MAX_THREADS=1 \
     -e UMASK=000 \
     -e PUID=0 \
     -e PGID=0 \
@@ -39,6 +47,9 @@ docker run -d \
 ```
 
 **Notes**
+
+JAVA_INITIAL_HEAP_SIZE value must be a multiple of 1024 and greater than 2MB
+JAVA_MAX_HEAP_SIZE value must be a multiple of 1024 and greater than 2MB
 
 User ID (PUID) and Group ID (PGID) can be found by issuing the following command for the user you want to run the container as:-
 
