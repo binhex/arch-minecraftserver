@@ -83,6 +83,24 @@ if [[ ! -f "/root/puid" || ! -f "/root/pgid" || "\${previous_puid}" != "\${PUID}
 
 fi
 
+# write out current PUID and PGID to files in /root (used to compare on next run)
+echo "\${PUID}" > /root/puid
+echo "\${PGID}" > /root/pgid
+
+EOF
+
+# replace permissions placeholder string with contents of file (here doc)
+sed -i '/# PERMISSIONS_PLACEHOLDER/{
+    s/# PERMISSIONS_PLACEHOLDER//g
+    r /tmp/permissions_heredoc
+}' /usr/local/bin/init.sh
+rm /tmp/permissions_heredoc
+
+# env vars
+####
+
+cat <<'EOF' > /tmp/envvars_heredoc
+
 export MAX_BACKUPS=$(echo "${MAX_BACKUPS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 if [[ ! -z "${MAX_BACKUPS}" ]]; then
 	echo "[info] MAX_BACKUPS defined as '${MAX_BACKUPS}'" | ts '%Y-%m-%d %H:%M:%.S'
@@ -115,21 +133,14 @@ else
 	export JAVA_MAX_THREADS="1"
 fi
 
-# write out current PUID and PGID to files in /root (used to compare on next run)
-echo "\${PUID}" > /root/puid
-echo "\${PGID}" > /root/pgid
-
 EOF
 
-# replace permissions placeholder string with contents of file (here doc)
-sed -i '/# PERMISSIONS_PLACEHOLDER/{
-    s/# PERMISSIONS_PLACEHOLDER//g
-    r /tmp/permissions_heredoc
+# replace env vars placeholder string with contents of file (here doc)
+sed -i '/# ENVVARS_PLACEHOLDER/{
+    s/# ENVVARS_PLACEHOLDER//g
+    r /tmp/envvars_heredoc
 }' /usr/local/bin/init.sh
-rm /tmp/permissions_heredoc
-
-# env vars
-####
+rm /tmp/envvars_heredoc
 
 # cleanup
 cleanup.sh
