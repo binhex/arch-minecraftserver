@@ -48,8 +48,7 @@ docker run -d \
 
 **Notes**
 
-JAVA_INITIAL_HEAP_SIZE value must be a multiple of 1024 and greater than 2MB
-JAVA_MAX_HEAP_SIZE value must be a multiple of 1024 and greater than 2MB
+JAVA_INITIAL_HEAP_SIZE value and JAVA_MAX_HEAP_SIZE values must be a multiple of 1024 and greater than 2MB.
 
 User ID (PUID) and Group ID (PGID) can be found by issuing the following command for the user you want to run the container as:-
 
