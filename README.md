@@ -1,49 +1,41 @@
 **Application**
 
-[CouchPotato](http://couchpota.to)
+[Minecraft](https://www.minecraft.net/)
 
 **Description**
 
-Awesome PVR for usenet and torrents. Just fill in what you want to see and CouchPotato will add it to your "want to watch"-list. Every day it will search through multiple NZBs & Torrents sites, looking for the best possible match. If available, it will download it using your favorite download software.
+Minecraft is a sandbox video game created by Swedish game developer Markus Persson and released by Mojang in 2011. The game allows players to build with a variety of different blocks in a 3D procedurally generated world, requiring creativity from players. Other activities in the game include exploration, resource gathering, crafting, and combat. Multiple game modes that change gameplay are available, including—but not limited to—a survival mode, in which players must acquire resources to build the world and maintain health, and a creative mode, where players have unlimited resources to build with.
 
 **Build notes**
 
-Latest stable CouchPotato release from Arch Linux AUR.
+Latest stable Minecraft release from Arch Linux AUR.
 
 **Usage**
 ```
 docker run -d \
-    -p 5050:5050 \ 
+    -p 25565:25565 \ 
     --name=<container name> \
-    -v <path for media files>:/media \
-    -v <path for data files>:/data \
     -v <path for config files>:/config \
     -v /etc/localtime:/etc/localtime:ro \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
     -e PGID=<gid for user> \
-    binhex/arch-couchpotato
+    binhex/arch-minecraft
 ```
 
 Please replace all user variables in the above command defined by <> with the correct values.
 
-**Access application**
-
-`http://<host ip>:5050`
-
 **Example**
 ```
 docker run -d \
-    -p 5050:5050 \ 
-    --name=couchpotato \
-    -v /media/movies:/media \
-    -v /apps/docker/sabnzbd/watched:/data \
-    -v /apps/docker/couchpotato:/config \
+    -p 25565:25565 \ 
+    --name=minecraft \
+    -v /apps/docker/minecraft:/config \
     -v /etc/localtime:/etc/localtime:ro \
     -e UMASK=000 \
     -e PUID=0 \
     -e PGID=0 \
-    binhex/arch-couchpotato
+    binhex/arch-minecraft
 ```
 
 **Notes**
