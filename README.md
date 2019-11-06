@@ -13,7 +13,7 @@ Latest stable Minecraft release from Arch Linux AUR.
 **Usage**
 ```
 docker run -d \
-    -p 25565:25565 \ 
+    -p 25565:25565 \
     --name=<container name> \
     -v <path for config files>:/config \
     -v /etc/localtime:/etc/localtime:ro \
@@ -32,7 +32,7 @@ Please replace all user variables in the above command defined by <> with the co
 **Example**
 ```
 docker run -d \
-    -p 25565:25565 \ 
+    -p 25565:25565 \
     --name=minecraftserver \
     -v /apps/docker/minecraftserver:/config \
     -v /etc/localtime:/etc/localtime:ro \
