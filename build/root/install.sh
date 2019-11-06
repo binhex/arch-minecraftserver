@@ -35,7 +35,7 @@ aur_packages="minecraft-server"
 # call aur install script (arch user repo)
 source aur.sh
 
-# config minecraft
+# config java minecraft
 ####
 
 # copy config file containing env vars, sourced in from /usr/bin/minecraftd
