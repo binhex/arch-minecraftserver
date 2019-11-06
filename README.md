@@ -1,6 +1,6 @@
 **Application**
 
-[Minecraft Server](https://www.minecraft.net/)
+[Minecraft Server](https://www.minecraft.net/en-us/download/server/)
 
 **Description**
 
