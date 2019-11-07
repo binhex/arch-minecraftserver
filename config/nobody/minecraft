@@ -4,8 +4,8 @@
 # Variables are interpreted in bash. Simply using bash-syntax is sufficient.
 
 # General parameters
-SERVER_ROOT="/srv/minecraft"
-BACKUP_DEST="/srv/minecraft/backup"
+SERVER_ROOT="/config/minecraft"
+BACKUP_DEST="/config/minecraft/backup"
 BACKUP_PATHS="world" # World paths separated by spaces relative to SERVER_ROOT
 KEEP_BACKUPS="${MAX_BACKUPS}"
 GAME_USER="nobody"

@@ -1,28 +1,21 @@
 #!/bin/bash
 
-# if minecraft folder exists in container then rename
-if [[ -d "/srv/minecraft" && ! -L "/srv/minecraft" ]]; then
-	mv /srv/minecraft /srv/minecraft-backup 2>/dev/null || true
-fi
-
-# if minecraft folder doesnt exist then copy default to host config volume (soft linked)
+# if minecraft folder doesnt exist then copy default to host config volume
 if [ ! -d "/config/minecraft" ]; then
 
-	echo "[info] minecraft folder doesnt exist, copying default to /config/minecraft/..."
+	echo "[info] minecraft folder doesnt exist, copying default to '/config/minecraft/'..."
 
 	mkdir -p /config/minecraft
-	if [[ -d "/srv/minecraft-backup" && ! -L "/srv/minecraft-backup" ]]; then
-		cp -R /srv/minecraft-backup/* /config/minecraft/ 2>/dev/null || true
+	if [[ -d "/srv/minecraft" ]]; then
+		cp -R /srv/minecraft/* /config/minecraft/ 2>/dev/null || true
 	fi
 
 else
 
-	echo "[info] minecraft folder already exists, skipping copy"
+	echo "[info] Minecraft folder '/config/minecraft' already exists, rsyncing newer files..."
+	rsync -ur --exclude 'world' --exclude 'server.properties' --exclude '*.json' /srv/minecraft/ /config/minecraft
 
 fi
-
-# create soft link to minecraft folder
-ln -fs /config/minecraft /srv
 
 if [ ! -f /config/minecraft/eula.txt ]; then
 
