@@ -13,7 +13,7 @@ if [ ! -d "/config/minecraft" ]; then
 else
 
 	echo "[info] Minecraft folder '/config/minecraft' already exists, rsyncing newer files..."
-	rsync -ur --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
+	rsync -url --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
 
 fi
 
@@ -37,7 +37,7 @@ fi
 
 echo "[info] Starting Minecraft Java process..."
 /usr/bin/minecraftd start
-echo "[info] Java (minecraft) process started, successful start"
+echo "[info] Minecraft Java process started, successful start"
 
 # /usr/bin/minecraftd is dameonised, thus we need to run something in foreground to prevent exit of script
 cat
