@@ -13,7 +13,7 @@ if [ ! -d "/config/minecraft" ]; then
 else
 
 	echo "[info] Minecraft folder '/config/minecraft' already exists, rsyncing newer files..."
-	rsync -ur --exclude 'world' --exclude 'server.properties' --exclude '*.json' /srv/minecraft/ /config/minecraft
+	rsync -ur --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
 
 fi
 
@@ -23,19 +23,19 @@ if [ ! -f /config/minecraft/eula.txt ]; then
 	# start minecraft server for the first time to force generation of the eula.txt (will abort as eula not accepted)
 	/usr/bin/minecraftd start
 
-	echo "[info] Waiting for Java (minecraft) process to abort (expected, due to eula flag not set)..."
+	echo "[info] Waiting for Minecraft Java process to abort (expected, due to eula flag not set)..."
 	while pgrep -fa "java" > /dev/null; do
 		sleep 0.1
 	done
-	echo "[info] Java (minecraft) process ended"
+	echo "[info] Minecraft Java process ended"
 
-	echo "[info] Setting eula to true..."
+	echo "[info] Setting EULA to true..."
 	sed -i -e 's~eula=false~eula=true~g' '/config/minecraft/eula.txt'
-	echo "[info] eula set to true"
+	echo "[info] EULA set to true"
 
 fi
 
-echo "[info] Starting Java (minecraft) process..."
+echo "[info] Starting Minecraft Java process..."
 /usr/bin/minecraftd start
 echo "[info] Java (minecraft) process started, successful start"
 
