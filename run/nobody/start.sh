@@ -13,14 +13,13 @@ if [ ! -d "/config/minecraft" ]; then
 else
 
 	echo "[info] Minecraft folder '/config/minecraft' already exists, rsyncing newer files..."
-	rsync -url --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
+	rsync -rlt --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
 
 fi
 
 if [ ! -f /config/minecraft/eula.txt ]; then
 
 	echo "[info] Starting Java (minecraft) process to force creation of eula.txt..."
-	# start minecraft server for the first time to force generation of the eula.txt (will abort as eula not accepted)
 	/usr/bin/minecraftd start
 
 	echo "[info] Waiting for Minecraft Java process to abort (expected, due to eula flag not set)..."
