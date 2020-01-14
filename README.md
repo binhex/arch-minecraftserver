@@ -53,7 +53,7 @@ JAVA_INITIAL_HEAP_SIZE value and JAVA_MAX_HEAP_SIZE values must be a multiple of
 If you want to connect to the minecraft server console then issue the following command, use CTRL+a and then press 'd' to disconnect from the session, leaving it running.
 
 ```
-docker exec -u nobody -t <name of container> /usr/bin/minecraftd console
+docker exec -u nobody -it <name of container> /usr/bin/minecraftd console
 ```
 
 User ID (PUID) and Group ID (PGID) can be found by issuing the following command for the user you want to run the container as:-
