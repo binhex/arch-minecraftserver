@@ -3,7 +3,7 @@
 # if minecraft folder doesnt exist then copy default to host config volume
 if [ ! -d "/config/minecraft" ]; then
 
-	echo "[info] minecraft folder doesnt exist, copying default to '/config/minecraft/'..."
+	echo "[info] Minecraft folder doesn't exist, copying default to '/config/minecraft/'..."
 
 	mkdir -p /config/minecraft
 	if [[ -d "/srv/minecraft" ]]; then
@@ -19,14 +19,14 @@ fi
 
 if [ ! -f /config/minecraft/eula.txt ]; then
 
-	echo "[info] Starting Java (minecraft) process to force creation of eula.txt..."
+	echo "[info] Starting Minecraft Java process to force creation of eula.txt..."
 	/usr/bin/minecraftd start
 
 	echo "[info] Waiting for Minecraft Java process to abort (expected, due to eula flag not set)..."
 	while pgrep -fa "java" > /dev/null; do
 		sleep 0.1
 	done
-	echo "[info] Minecraft Java process ended"
+	echo "[info] Minecraft Java process ended (expected)"
 
 	echo "[info] Setting EULA to true..."
 	sed -i -e 's~eula=false~eula=true~g' '/config/minecraft/eula.txt'
@@ -36,7 +36,5 @@ fi
 
 echo "[info] Starting Minecraft Java process..."
 /usr/bin/minecraftd start
-echo "[info] Minecraft Java process started, successful start"
-
-# /usr/bin/minecraftd is dameonised, thus we need to run something in foreground to prevent exit of script
+echo "[info] Minecraft Java process is running"
 cat
