@@ -122,7 +122,7 @@ if [[ ! -z "${JAVA_MAX_HEAP_SIZE}" ]]; then
 	echo "[info] JAVA_MAX_HEAP_SIZE defined as '${JAVA_MAX_HEAP_SIZE}'" | ts '%Y-%m-%d %H:%M:%.S'
 else
 	echo "[info] JAVA_MAX_HEAP_SIZE not defined,(via -e JAVA_MAX_HEAP_SIZE), defaulting to '1024M'" | ts '%Y-%m-%d %H:%M:%.S'
-	export MAX_BACKUPS="1024M"
+	export JAVA_MAX_HEAP_SIZE="1024M"
 fi
 
 export JAVA_MAX_THREADS=$(echo "${JAVA_MAX_THREADS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
