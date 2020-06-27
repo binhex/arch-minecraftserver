@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# if minecraft folder doesnt exist then copy default to host config volume
-if [ ! -d "/config/minecraft" ]; then
+# if minecraft server.properties file doesnt exist then copy default to host config volume
+if [ ! -f "/config/minecraft/server.properties" ]; then
 
-	echo "[info] Minecraft folder doesn't exist, copying default to '/config/minecraft/'..."
+	echo "[info] Minecraft server.properties file doesnt exist, copying default installation to '/config/minecraft/'..."
 
 	mkdir -p /config/minecraft
 	if [[ -d "/srv/minecraft" ]]; then
@@ -12,6 +12,11 @@ if [ ! -d "/config/minecraft" ]; then
 
 else
 
+	# rsync options defined as follows:-
+	# -r = recursive copy to destination
+	# -l = copy source symlinks as symlinks on destination
+	# -t = keep source modification times for destination files/folders
+	# -p = keep source permissions for destination files/folders
 	echo "[info] Minecraft folder '/config/minecraft' already exists, rsyncing newer files..."
 	rsync -rltp --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
 
