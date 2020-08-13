@@ -46,22 +46,39 @@ fi
 ####
 
 # define aur packages
-aur_packages="minecraft-server"
+aur_packages=""
 
 # call aur install script (arch user repo)
 source aur.sh
+
+# custom
+####
+
+# determine download url for minecraft java server from minecraft.net
+# use awk to match start and end of tags
+# grep to perl regex match download url
+minecraft_java_url=$(curly.sh -url https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
+
+# download compiled minecraft java server
+curly.sh -of "/tmp/minecraft_server.jar" -url "${minecraft_java_url}"
+
+# move minecraft java server
+mkdir -p "/srv/minecraft" && mv "/tmp/minecraft_server.jar" "/srv/minecraft/"
 
 # config java minecraft
 ####
 
 # copy config file containing env vars, sourced in from /usr/bin/minecraftd
-cp /home/nobody/minecraft /etc/conf.d/minecraft
+mkdir -p "/etc/conf.d" && cp "/home/nobody/minecraft" "/etc/conf.d/minecraft"
+
+# copy minecraft startup bash script file, called via start.sh
+cp "/home/nobody/minecraftd" "/usr/bin/" && chmod +x "/usr/bin/minecraftd"
 
 # container perms
 ####
 
 # define comma separated list of paths 
-install_paths="/etc/conf.d,/srv,/home/nobody"
+install_paths="/etc/conf.d,/srv/minecraft,/home/nobody"
 
 # split comma separated string into list for install paths
 IFS=',' read -ra install_paths_list <<< "${install_paths}"
