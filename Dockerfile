@@ -13,9 +13,6 @@ ADD build/root/*.sh /root/
 # add run bash script
 ADD run/nobody/*.sh /home/nobody/
 
-# add pre-configured config files for minecraft
-ADD config/nobody/ /home/nobody/
-
 # install app
 #############
 
@@ -31,6 +28,9 @@ VOLUME /config
 
 # expose port for minecraft
 EXPOSE 25565
+
+# expose ipv4 port for minecraft web ui console
+EXPOSE 8222/tcp
 
 # set permissions
 #################

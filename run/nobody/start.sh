@@ -1,5 +1,18 @@
 #!/bin/bash
 
+function start_minecraft() {
+
+	# create logs sub folder to store screen output from console
+	mkdir -p /config/minecraft/logs
+
+	# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
+	echo "[info] Starting Minecraft Java process..."
+	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} -jar './minecraft_server.jar' nogui"
+	echo "[info] Minecraft Bedrock process is running"
+	cat
+
+}
+
 # if minecraft server.properties file doesnt exist then copy default to host config volume
 if [ ! -f "/config/minecraft/server.properties" ]; then
 
@@ -25,7 +38,7 @@ fi
 if [ ! -f /config/minecraft/eula.txt ]; then
 
 	echo "[info] Starting Minecraft Java process to force creation of eula.txt..."
-	/usr/bin/minecraftd start
+	start_minecraft
 
 	echo "[info] Waiting for Minecraft Java process to abort (expected, due to eula flag not set)..."
 	while pgrep -fa "java" > /dev/null; do
@@ -39,7 +52,5 @@ if [ ! -f /config/minecraft/eula.txt ]; then
 
 fi
 
-echo "[info] Starting Minecraft Java process..."
-/usr/bin/minecraftd start
-echo "[info] Minecraft Java process is running"
-cat
+# start minecraft
+start_minecraft
