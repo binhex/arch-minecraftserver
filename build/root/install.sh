@@ -189,7 +189,7 @@ if [[ "${ENABLE_WEBUI_CONSOLE}" == "yes" ]]; then
 			if [ ! -f "${WEBUI_PASS_file}" ]; then
 				# generate random password for web ui using SHA to hash the date,
 				# run through base64, and then output the top 16 characters to a file.
-				mkdir -p "/config/minecraft/security"
+				mkdir -p "/config/minecraft/security" ; chown -R nobody:users "/config/minecraft"
 				date +%s | sha256sum | base64 | head -c 16 > "${WEBUI_PASS_file}"
 			fi
 			echo "[warn] WEBUI_PASS not defined (via -e WEBUI_PASS), using randomised password (password stored in '${WEBUI_PASS_file}')" | ts '%Y-%m-%d %H:%M:%.S'
