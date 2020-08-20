@@ -9,7 +9,6 @@ function start_minecraft() {
 	echo "[info] Starting Minecraft Java process..."
 	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} -jar './minecraft_server.jar' nogui"
 	echo "[info] Minecraft Java process is running"
-	cat
 
 }
 
@@ -52,5 +51,5 @@ if [ ! -f /config/minecraft/eula.txt ]; then
 
 fi
 
-# start minecraft
-start_minecraft
+# start minecraft, run cat to keep script running
+start_minecraft ; cat
