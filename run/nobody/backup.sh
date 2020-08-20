@@ -11,12 +11,12 @@ if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 
 		retry_count=10
 
+		echo "[info] Waiting ${CREATE_BACKUP_HOURS} hours before running worlds backup..."
+		sleep "${CREATE_BACKUP_HOURS}"h
+
 		if [ ! -f '/config/minecraft/logs/screen.log' ]; then
 			echo "[warn] Screen logging of the Minecraft console is not enabled, exiting backup script..."; exit 1
 		fi
-
-		echo "[info] Waiting ${CREATE_BACKUP_HOURS} hours before running worlds backup..."
-		sleep "${CREATE_BACKUP_HOURS}"h
 
 		echo "[info] Starting Minecraft worlds backup..."
 
