@@ -7,7 +7,7 @@ function run_console_command() {
 	screen_message="${1}"
 	console_command="${2}"
 
-	retry_count=10
+	retry_count=6
 
 	while ! tail -n 5 '/config/minecraft/logs/screen.log' | grep -q "${screen_message}"; do
 
@@ -16,13 +16,13 @@ function run_console_command() {
 
 		if [ "${retry_count}" -eq "0" ]; then
 
-			echo "[warn] Unable to obtain Minecraft worlds in saved state, giving up waiting..."
+			echo "[warn] Minecraft console did not confirm message '${screen_message}', giving up waiting..."
 			return 1
 
 		fi
 
-		echo "[info] Waiting for Minecraft databases to be ready for backup, ${retry_count} retries left..."
-		sleep 6s
+		echo "[info] Waiting for Minecraft console message '${screen_message}', ${retry_count} retries left..."
+		sleep 10s
 
 	done
 	return 0
@@ -56,7 +56,7 @@ if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 
 		fi
 
-		echo "[info] Setting Minecraft back to resume to allow any deferred writes..."
+		echo "[info] Setting Minecraft back to 'save-on'..."
 		run_console_command 'Automatic saving is now enabled' 'save-on'
 
 		echo "[info] Minecraft worlds backup complete"
