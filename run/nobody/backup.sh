@@ -9,7 +9,7 @@ function run_console_command() {
 
 	retry_count=6
 
-	while ! tail -n 5 '/config/minecraft/logs/screen.log' | grep -q "${screen_message}"; do
+	while ! tail -n 5 '/config/minecraft/logs/screen.log' | grep -q -P "${screen_message}"; do
 
 		screen -r minecraft -p 0 -X stuff "${console_command}^M"
 		retry_count=$((retry_count-1))
@@ -45,6 +45,12 @@ if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 
 		echo "[info] Starting Minecraft worlds backup..."
 
+		# removing any currently attached sessions (such as web ui console) as you cannot execute 'stuff' whilst another session is connected
+		screen -D
+
+		# removing any dead sessions
+		screen -wipe
+
 		echo "[info] Run Minecraft console command to set Minecraft worlds ready for backup..."
 		run_console_command 'Automatic saving is now disabled' 'save-off'
 		run_console_command 'Saved the game' 'save-all'
@@ -60,6 +66,9 @@ if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 		run_console_command 'Automatic saving is now enabled' 'save-on'
 
 		echo "[info] Minecraft worlds backup complete"
+
+		# restart webui console as it may of been terminated due to forced detachment (see above)
+		nohup /home/nobody/webui.sh >> '/config/supervisord.log' &
 
 	done
 
