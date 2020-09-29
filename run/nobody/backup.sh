@@ -31,9 +31,6 @@ function run_console_command() {
 
 if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 
-	# create backup sub folder to store backups of worlds
-	mkdir -p /config/minecraft/backups
-
 	while true; do
 
 		echo "[info] Waiting ${CREATE_BACKUP_HOURS} hours before running worlds backup..."
@@ -57,8 +54,14 @@ if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 
 		if [ "${?}" -eq 0 ]; then
 
-			echo "[info] Minecraft worlds are now ready for backup, backing up to '/config/minecraft/backups/$(date +%Y%m%d-%H%M%S)/'..."
-			cp -R "/config/minecraft/world" "/config/minecraft/backups/$(date +%Y%m%d-%H%M%S)"
+			# get current datetime
+			datetime=$(date +%Y%m%d-%H%M%S)
+
+			# create backup sub folder to store backups of worlds
+			mkdir -p "/config/minecraft/backups/${datetime}"
+
+			echo "[info] Minecraft worlds are now ready for backup, backing up to '/config/minecraft/backups/${datetime}/'..."
+			cp -R "/config/minecraft/world" "/config/minecraft/backups/${datetime}"
 
 		fi
 
