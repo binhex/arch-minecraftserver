@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ 
 function start_minecraft() {
 
 	# create logs sub folder to store screen output from console
