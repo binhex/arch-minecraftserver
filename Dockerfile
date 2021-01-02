@@ -32,6 +32,8 @@ EXPOSE 25565
 # expose ipv4 port for minecraft web ui console
 EXPOSE 8222/tcp
 
+ENV MINECRAFT_JAR="minecraft_server.jar"
+
 # set permissions
 #################
 
