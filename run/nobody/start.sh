@@ -7,7 +7,7 @@ function start_minecraft() {
 
 	#Check if Start Server exists
 	echo "[info]Checking for startserver.sh before tryign to launch."
-	if [ ! -f "/config/minecraft/server.properties" ]; then
+	if [ ! -f "/config/minecraft/startserver.sh" ]; then
 		echo "[error]startserver.sh does not exist, please create a file with your server args to start server."
 	else
 		# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
