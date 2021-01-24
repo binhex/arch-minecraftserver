@@ -5,11 +5,16 @@ function start_minecraft() {
 	# create logs sub folder to store screen output from console
 	mkdir -p /config/minecraft/logs
 
-	# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
-	echo "[info] Starting Minecraft Java process..."
-	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} -jar './forge-1.12.2-14.23.5.2854.jar' nogui"
-	echo "[info] Minecraft Java process is running"
-
+	#Check if Start Server exists
+	echo "[info]Checking for startserver.sh before tryign to launch."
+	if [ ! -f "/config/minecraft/server.properties" ]; then
+		echo "[error]startserver.sh does not exist, please create a file with your server args to start server."
+	else
+		# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
+		echo "[info] Starting Minecraft Java process..."
+		screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && startserver.sh" # This relies on the server using BloodyMods/ServerStarter server starter. But this file can be anything.
+		echo "[info] Minecraft Java process is running"
+	fi
 }
 
 # if minecraft server.properties file doesnt exist then copy default to host config volume
