@@ -36,7 +36,7 @@ fi
 
 if [ ! -f /config/minecraft/eula.txt ]; then
 
-	echo "[info] Starting Minecraft Java process to force creation of eula.txt..."
+	echo "[info] Starting Minecraft Java process to force creation of 'eula.txt'..."
 	start_minecraft
 
 	echo "[info] Waiting for Minecraft Java process to abort (expected, due to eula flag not set)..."
@@ -45,10 +45,15 @@ if [ ! -f /config/minecraft/eula.txt ]; then
 	done
 	echo "[info] Minecraft Java process ended (expected)"
 
-	echo "[info] Setting EULA to true..."
-	sed -i -e 's~eula=false~eula=true~g' '/config/minecraft/eula.txt'
-	echo "[info] EULA set to true"
+fi
 
+echo "[info] Checking EULA is set to true..."
+sed -i -e 's~eula=false~eula=true~g' '/config/minecraft/eula.txt'
+
+if [ "${?}" -eq 0 ]; then
+	echo "[info] EULA set to true"
+else
+	echo "[info] EULA already set to true"
 fi
 
 # start minecraft, run cat to keep script running
