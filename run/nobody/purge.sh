@@ -11,7 +11,7 @@ if [[ "${PURGE_BACKUP_DAYS}" -gt 0 ]]; then
 		if [[ -d /config/minecraft/backups ]]; then
 
 			echo "[info] Removing any Minecraft worlds backups with a creation date older than ${PURGE_BACKUP_DAYS} days..."
-			find /config/minecraft/backups/* -type d -ctime +"${PURGE_BACKUP_DAYS}" 2>/dev/null | xargs rm -rf
+			find /config/minecraft/backups/* -type d -mtime +"${PURGE_BACKUP_DAYS}" 2>/dev/null | xargs rm -rf
 
 		fi
 

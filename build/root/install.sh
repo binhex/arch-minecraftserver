@@ -64,13 +64,13 @@ fi
 # custom
 ####
 
-# # determine download url for minecraft java server from minecraft.net
-# # use awk to match start and end of tags
-# # grep to perl regex match download url
-# minecraft_java_url=$(curly.sh -url https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
+# determine download url for minecraft java server from minecraft.net
+# use awk to match start and end of tags
+# grep to perl regex match download url
+minecraft_java_url=$(rcurl.sh https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
 
-# # download compiled minecraft java server
-# curly.sh -of "/tmp/minecraft_server.jar" -url "${minecraft_java_url}"
+# download compiled minecraft java server
+rcurl.sh -o "/tmp/minecraft_server.jar" "${minecraft_java_url}"
 
 # # move minecraft java server
 mkdir -p "/srv/minecraft" #&& mv "/tmp/minecraft_server.jar" "/srv/minecraft/"
