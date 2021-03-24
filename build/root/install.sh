@@ -202,7 +202,7 @@ if [[ "${ENABLE_WEBUI_CONSOLE}" == "yes" ]]; then
 		echo "[info] WEBUI_CONSOLE_TITLE defined as '${WEBUI_CONSOLE_TITLE}'" | ts '%Y-%m-%d %H:%M:%.S'
 	else
 		echo "[info] WEBUI_CONSOLE_TITLE not defined,(via -e WEBUI_CONSOLE_TITLE), defaulting to 'Minecraft Java'" | ts '%Y-%m-%d %H:%M:%.S'
-		export WEBUI_CONSOLE_TITLE="Minecraft Bedrock"
+		export WEBUI_CONSOLE_TITLE="Minecraft Java"
 	fi
 fi
 
