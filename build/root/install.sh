@@ -35,7 +35,7 @@ fi
 ####
 
 # define pacman packages
-pacman_packages="jre8-openjdk-headless screen rsync"
+pacman_packages="jre8-openjdk-headless jre11-openjdk-headless screen rsync"
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
@@ -204,6 +204,31 @@ if [[ "${ENABLE_WEBUI_CONSOLE}" == "yes" ]]; then
 		echo "[info] WEBUI_CONSOLE_TITLE not defined,(via -e WEBUI_CONSOLE_TITLE), defaulting to 'Minecraft Java'" | ts '%Y-%m-%d %H:%M:%.S'
 		export WEBUI_CONSOLE_TITLE="Minecraft Bedrock"
 	fi
+fi
+
+export CUSTOM_JAR_PATH=$(echo "${CUSTOM_JAR_PATH}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${CUSTOM_JAR_PATH}" ]]; then
+	echo "[info] CUSTOM_JAR_PATH defined as '${CUSTOM_JAR_PATH}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] CUSTOM_JAR_PATH not defined,(via -e CUSTOM_JAR_PATH), defaulting to '/config/minecraft/minecraft_server.jar' (Mojang Minecraft Java)" | ts '%Y-%m-%d %H:%M:%.S'
+	export CUSTOM_JAR_PATH="/config/minecraft/minecraft_server.jar"
+fi
+
+export JAVA_VERSION=$(echo "${JAVA_VERSION}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${JAVA_VERSION}" ]]; then
+	echo "[info] JAVA_VERSION defined as '${JAVA_VERSION}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] JAVA_VERSION not defined,(via -e JAVA_VERSION), defaulting to '8'" | ts '%Y-%m-%d %H:%M:%.S'
+	export JAVA_VERSION="8"
+fi
+
+if [[ "${JAVA_VERSION}" == "8" ]]; then
+	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
+elif [[ "${JAVA_VERSION}" == "11" ]]; then
+	ln -fs /usr/lib/jvm/java-11-openjdk/bin/java /usr/bin/java
+else
+	echo "[warn] Java version '${JAVA_VERSION}' not installed, defaulting to Java version 8" | ts '%Y-%m-%d %H:%M:%.S'
+	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
 fi
 
 export JAVA_INITIAL_HEAP_SIZE=$(echo "${JAVA_INITIAL_HEAP_SIZE}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
