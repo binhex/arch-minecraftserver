@@ -230,6 +230,7 @@ else
 	echo "[warn] Java version '${JAVA_VERSION}' not installed, defaulting to Java version 8" | ts '%Y-%m-%d %H:%M:%.S'
 	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
 fi
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
 export JAVA_INITIAL_HEAP_SIZE=$(echo "${JAVA_INITIAL_HEAP_SIZE}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 if [[ ! -z "${JAVA_INITIAL_HEAP_SIZE}" ]]; then
