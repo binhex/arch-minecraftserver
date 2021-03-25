@@ -224,14 +224,14 @@ fi
 
 if [[ "${JAVA_VERSION}" == "8" ]]; then
 	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
-	archlinux-java set java-8-openjdk
+	archlinux-java set java-8-openjdk/jre
 elif [[ "${JAVA_VERSION}" == "11" ]]; then
 	ln -fs /usr/lib/jvm/java-11-openjdk/jre/bin/java /usr/bin/java
 	archlinux-java set java-11-openjdk
 else
 	echo "[warn] Java version '${JAVA_VERSION}' not installed, defaulting to Java version 8" | ts '%Y-%m-%d %H:%M:%.S'
 	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
-	archlinux-java set java-8-openjdk
+	archlinux-java set java-8-openjdk/jre
 fi
 export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
