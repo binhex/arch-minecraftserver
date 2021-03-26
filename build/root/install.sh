@@ -79,7 +79,7 @@ mkdir -p "/srv/minecraft" && mv "/tmp/minecraft_server.jar" "/srv/minecraft/"
 ####
 
 # define comma separated list of paths 
-install_paths="/srv/minecraft,/home/nobody,/usr/lib/jvm/java-8-openjdk,/usr/lib/jvm/java-11-openjdk"
+install_paths="/srv/minecraft,/home/nobody"
 
 # split comma separated string into list for install paths
 IFS=',' read -ra install_paths_list <<< "${install_paths}"
