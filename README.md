@@ -58,7 +58,7 @@ docker run -d \
     -e ENABLE_WEBUI_AUTH=yes \
     -e WEBUI_USER=admin \
     -e WEBUI_PASS=minecraft \
-    -e WEBUI_CONSOLE_TITLE=Minecraft Server \
+    -e WEBUI_CONSOLE_TITLE='Minecraft Server' \
     -e CUSTOM_JAR_PATH=/config/minecraft/paperclip.jar \
     -e JAVA_VERSION=11 \
     -e JAVA_INITIAL_HEAP_SIZE=512M \
