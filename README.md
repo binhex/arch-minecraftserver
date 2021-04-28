@@ -30,6 +30,7 @@ docker run -d \
     -e JAVA_INITIAL_HEAP_SIZE=<java initial heap size in megabytes> \
     -e JAVA_MAX_HEAP_SIZE=<java max heap size in megabytes> \
     -e JAVA_MAX_THREADS=<java max number of threads> \
+    -e STARTUP_CMD=<minecraft console command to execute on startup> \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
     -e PGID=<gid for user> \
@@ -64,6 +65,7 @@ docker run -d \
     -e JAVA_INITIAL_HEAP_SIZE=512M \
     -e JAVA_MAX_HEAP_SIZE=1024M \
     -e JAVA_MAX_THREADS=1 \
+    -e STARTUP_CMD=gamerule reducedDebugInfo true \
     -e UMASK=000 \
     -e PUID=0 \
     -e PGID=0 \

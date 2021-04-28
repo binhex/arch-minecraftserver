@@ -259,6 +259,13 @@ else
 	export JAVA_MAX_THREADS="1"
 fi
 
+export STARTUP_CMD=$(echo "${STARTUP_CMD}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${STARTUP_CMD}" ]]; then
+	echo "[info] STARTUP_CMD defined as '${STARTUP_CMD}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] STARTUP_CMD not defined (via -e STARTUP_CMD)" | ts '%Y-%m-%d %H:%M:%.S'
+fi
+
 EOF
 
 # replace env vars placeholder string with contents of file (here doc)
