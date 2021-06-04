@@ -46,7 +46,7 @@ fi
 ####
 
 # define aur packages
-aur_packages=""
+aur_packages="java-openjdk-bin"
 
 # call aur install script (arch user repo)
 source aur.sh
@@ -228,6 +228,9 @@ if [[ "${JAVA_VERSION}" == "8" ]]; then
 elif [[ "${JAVA_VERSION}" == "11" ]]; then
 	ln -fs /usr/lib/jvm/java-11-openjdk/bin/java /usr/bin/java
 	archlinux-java set java-11-openjdk
+elif [[ "${JAVA_VERSION}" == "16" ]]; then
+	ln -fs /usr/lib/jvm/java-16-openjdk/bin/java /usr/bin/java
+	archlinux-java set java-16-openjdk
 else
 	echo "[warn] Java version '${JAVA_VERSION}' not installed, defaulting to Java version 8" | ts '%Y-%m-%d %H:%M:%.S'
 	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
