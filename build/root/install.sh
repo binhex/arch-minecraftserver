@@ -65,11 +65,9 @@ fi
 ####
 
 # determine download url for minecraft java server from minecraft.net
-# set header to mimic browser, as ms blocks otherwise
 # use awk to match start and end of tags
 # grep to perl regex match download url
-header="user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
-minecraft_java_url=$(rcurl.sh --header "${header}" https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
+minecraft_java_url=$(rcurl.sh https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
 
 # download compiled minecraft java server
 rcurl.sh -o "/tmp/minecraft_server.jar" "${minecraft_java_url}"
