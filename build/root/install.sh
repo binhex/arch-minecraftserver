@@ -65,9 +65,11 @@ fi
 ####
 
 # determine download url for minecraft java server from minecraft.net
+# set header to mimic browser, as ms blocks otherwise
 # use awk to match start and end of tags
 # grep to perl regex match download url
-minecraft_java_url=$(rcurl.sh https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
+header="user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36"
+minecraft_java_url=$(rcurl.sh --header "${header}" https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
 
 # download compiled minecraft java server
 rcurl.sh -o "/tmp/minecraft_server.jar" "${minecraft_java_url}"
@@ -78,7 +80,7 @@ mkdir -p "/srv/minecraft" && mv "/tmp/minecraft_server.jar" "/srv/minecraft/"
 # container perms
 ####
 
-# define comma separated list of paths 
+# define comma separated list of paths
 install_paths="/srv/minecraft,/home/nobody"
 
 # split comma separated string into list for install paths
@@ -108,7 +110,7 @@ cat <<EOF > /tmp/permissions_heredoc
 previous_puid=\$(cat "/root/puid" 2>/dev/null || true)
 previous_pgid=\$(cat "/root/pgid" 2>/dev/null || true)
 
-# if first run (no puid or pgid files in /tmp) or the PUID or PGID env vars are different 
+# if first run (no puid or pgid files in /tmp) or the PUID or PGID env vars are different
 # from the previous run then re-apply chown with current PUID and PGID values.
 if [[ ! -f "/root/puid" || ! -f "/root/pgid" || "\${previous_puid}" != "\${PUID}" || "\${previous_pgid}" != "\${PGID}" ]]; then
 
