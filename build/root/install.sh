@@ -35,7 +35,7 @@ fi
 ####
 
 # define pacman packages
-pacman_packages="jre8-openjdk-headless jre11-openjdk-headless screen rsync"
+pacman_packages="jre8-openjdk-headless jre11-openjdk-headless jre-openjdk-headless screen rsync"
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
@@ -46,7 +46,7 @@ fi
 ####
 
 # define aur packages
-aur_packages="java-openjdk-bin"
+aur_packages=""
 
 # call aur install script (arch user repo)
 source aur.sh
@@ -64,13 +64,25 @@ fi
 # custom
 ####
 
-# determine download url for minecraft java server from minecraft.net
-# use awk to match start and end of tags
-# grep to perl regex match download url
-minecraft_java_url=$(rcurl.sh https://www.minecraft.net/en-us/download/server | awk '/minecraft-version/,/<\/div>/' | grep -Po -m 1 'https://launcher.mojang.com[^"]+')
+# identify minecraft version type
+version_type=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' | jq -r .versions[0].type)
+
+if [[ "${version_type}" != "release" ]]; then
+	echo "[crit] Minecraft Java version type '${version_type}' is != to 'release', exiting script..."
+	exit 1
+fi
+
+# identify minecraft version id (version)
+version_id=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' | jq -r .versions[0].id)
+echo "[info] Minecraft Java version id is '${version_id}'"
+
+# identify minecraft version  url
+version_url=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' | jq -r .versions[0].url)
+url=$(rcurl.sh -s "${version_url}" | jq -r .downloads.server.url)
+echo "[info] Minecraft Java Version URL is '${url}'"
 
 # download compiled minecraft java server
-rcurl.sh -o "/tmp/minecraft_server.jar" "${minecraft_java_url}"
+rcurl.sh -o "/tmp/minecraft_server.jar" "${url}"
 
 # move minecraft java server
 mkdir -p "/srv/minecraft" && mv "/tmp/minecraft_server.jar" "/srv/minecraft/"
