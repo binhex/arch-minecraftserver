@@ -49,7 +49,7 @@ if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 		screen -wipe
 
 		echo "[info] Run Minecraft console command to set Minecraft worlds ready for backup..."
-		run_console_command 'Automatic saving is now disabled' 'save-off'
+		run_console_command 'Automatic saving is now disabled|Saving is already turned off' 'save-off'
 		run_console_command 'Saved the game' 'save-all'
 
 		if [ "${?}" -eq 0 ]; then
@@ -66,7 +66,7 @@ if [[ "${CREATE_BACKUP_HOURS}" -gt 0 ]]; then
 		fi
 
 		echo "[info] Setting Minecraft back to 'save-on'..."
-		run_console_command 'Automatic saving is now enabled' 'save-on'
+		run_console_command 'Automatic saving is now enabled|Saving is already turned on' 'save-on'
 
 		echo "[info] Minecraft worlds backup complete"
 
