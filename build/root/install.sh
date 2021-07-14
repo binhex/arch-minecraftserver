@@ -35,7 +35,7 @@ fi
 ####
 
 # define pacman packages
-pacman_packages="jre8-openjdk-headless jre11-openjdk-headless jre-openjdk-headless screen rsync"
+pacman_packages="jre8-openjdk-headless jre11-openjdk-headless screen rsync"
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
@@ -46,7 +46,7 @@ fi
 ####
 
 # define aur packages
-aur_packages=""
+aur_packages="java-openjdk-bin"
 
 # call aur install script (arch user repo)
 source aur.sh
