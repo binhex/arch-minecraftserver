@@ -1,28 +1,70 @@
 #!/bin/bash
 
-function accept_eula() {
 
-	if [ ! -f '/config/minecraft/eula.txt' ]; then
+function copy_minecraft(){
 
-		echo "[info] Starting Minecraft Java process to force creation of 'eula.txt'..."
-		start_minecraft
+	if [[ -z "${CUSTOM_JAR_PATH}" || "${CUSTOM_JAR_PATH}" == '/config/minecraft/minecraft_server.jar' ]]; then
 
-		echo "[info] Waiting for Minecraft Java process to abort (expected, due to eula flag not set)..."
-		while pgrep -fu "nobody" "java" > /dev/null; do
-			sleep 0.1
-		done
-		echo "[info] Minecraft Java process ended (expected)"
+		# if minecraft server.properties file doesnt exist then copy default to host config volume
+		if [ ! -f "/config/minecraft/server.properties" ]; then
+
+			echo "[info] Minecraft 'server.properties' file doesnt exist, copying default installation from '/srv/minecraft' to '/config/minecraft/'..."
+
+			mkdir -p /config/minecraft
+			if [[ -d "/srv/minecraft" ]]; then
+				cp -R /srv/minecraft/* /config/minecraft/ 2>/dev/null || true
+			fi
+
+		else
+
+			# rsync options defined as follows:-
+			# -r = recursive copy to destination
+			# -l = copy source symlinks as symlinks on destination
+			# -t = keep source modification times for destination files/folders
+			# -p = keep source permissions for destination files/folders
+			echo "[info] Minecraft folder '/config/minecraft' already exists, rsyncing newer files..."
+			rsync -rltp --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
+
+		fi
 
 	fi
 
-	echo "[info] Checking EULA is set to 'true'..."
-	cat '/config/minecraft/eula.txt' | grep -q 'eula=true'
+}
 
-	if [ "${?}" -eq 0 ]; then
-		echo "[info] EULA set to 'true'"
+function accept_eula() {
+
+	if [[ -z "${CUSTOM_JAR_PATH}" || "${CUSTOM_JAR_PATH}" == '/config/minecraft/minecraft_server.jar' ]]; then
+
+		eula_filepath="/config/minecraft/eula.txt"
+
 	else
-		echo "[info] EULA set to 'false', changing to 'true'..."
-		sed -i -e 's~eula=false~eula=true~g' '/config/minecraft/eula.txt'
+
+		eula_path="$(dirname "${CUSTOM_JAR_PATH}")"
+		eula_filepath="${eula_path}/eula.txt"
+
+	fi
+
+	if [ ! -f "${eula_filepath}" ]; then
+
+		echo "[info] EULA file does not exist at '${eula_filepath}', creating..."
+		echo 'eula=true' > "${eula_filepath}"
+
+	else
+
+		echo "[info] EULA file exists, checking EULA is set to 'true'..."
+		grep -q 'eula=true' < "${eula_filepath}"
+
+		if [ "${?}" -eq 0 ]; then
+
+			echo "[info] EULA set to 'true'"
+
+		else
+
+			echo "[info] EULA set to 'false', changing to 'true'..."
+			echo 'eula=true' > "${eula_filepath}"
+
+		fi
+
 	fi
 
 }
@@ -55,27 +97,8 @@ function startup_cmd() {
 
 }
 
-# if minecraft server.properties file doesnt exist then copy default to host config volume
-if [ ! -f "/config/minecraft/server.properties" ]; then
-
-	echo "[info] Minecraft server.properties file doesnt exist, copying default installation to '/config/minecraft/'..."
-
-	mkdir -p /config/minecraft
-	if [[ -d "/srv/minecraft" ]]; then
-		cp -R /srv/minecraft/* /config/minecraft/ 2>/dev/null || true
-	fi
-
-else
-
-	# rsync options defined as follows:-
-	# -r = recursive copy to destination
-	# -l = copy source symlinks as symlinks on destination
-	# -t = keep source modification times for destination files/folders
-	# -p = keep source permissions for destination files/folders
-	echo "[info] Minecraft folder '/config/minecraft' already exists, rsyncing newer files..."
-	rsync -rltp --exclude 'world' --exclude '/server.properties' --exclude '/*.json' /srv/minecraft/ /config/minecraft
-
-fi
+# copy/rsync minecraft to /config
+copy_minecraft
 
 # accept eula
 accept_eula
