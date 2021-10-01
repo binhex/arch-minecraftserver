@@ -26,7 +26,7 @@ docker run -d \
     -e WEBUI_PASS=<specify webui password> \
     -e WEBUI_CONSOLE_TITLE=<specify webui console title> \
     -e CUSTOM_JAR_PATH=<path to custom jar> \
-    -e JAVA_VERSION=<8|11|16> \
+    -e JAVA_VERSION=<8|11|latest> \
     -e JAVA_INITIAL_HEAP_SIZE=<java initial heap size in megabytes> \
     -e JAVA_MAX_HEAP_SIZE=<java max heap size in megabytes> \
     -e JAVA_MAX_THREADS=<java max number of threads> \
@@ -61,7 +61,7 @@ docker run -d \
     -e WEBUI_PASS=minecraft \
     -e WEBUI_CONSOLE_TITLE='Minecraft Server' \
     -e CUSTOM_JAR_PATH=/config/minecraft/paperclip.jar \
-    -e JAVA_VERSION=11 \
+    -e JAVA_VERSION=latest \
     -e JAVA_INITIAL_HEAP_SIZE=512M \
     -e JAVA_MAX_HEAP_SIZE=1024M \
     -e JAVA_MAX_THREADS=1 \

@@ -35,7 +35,7 @@ fi
 ####
 
 # define pacman packages
-pacman_packages="jre8-openjdk-headless jre11-openjdk-headless screen rsync"
+pacman_packages="jre8-openjdk-headless jre11-openjdk-headless jre-openjdk-headless screen rsync"
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
@@ -46,7 +46,7 @@ fi
 ####
 
 # define aur packages
-aur_packages="java-openjdk-bin"
+aur_packages=""
 
 # call aur install script (arch user repo)
 source aur.sh
@@ -226,29 +226,31 @@ else
 	export CUSTOM_JAR_PATH="/config/minecraft/minecraft_server.jar"
 fi
 
+# get latest java version for package 'jre-openjdk-headless'
+latest_java_version=$(pacman -Qi jre-openjdk-headless | grep -P -o -m 1 '^Version\s*: \K.+' | grep -P -o -m 1 '^[0-9]+')
+
 export JAVA_VERSION=$(echo "${JAVA_VERSION}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 if [[ ! -z "${JAVA_VERSION}" ]]; then
 	echo "[info] JAVA_VERSION defined as '${JAVA_VERSION}'" | ts '%Y-%m-%d %H:%M:%.S'
 else
-	echo "[info] JAVA_VERSION not defined,(via -e JAVA_VERSION), defaulting to '8'" | ts '%Y-%m-%d %H:%M:%.S'
-	export JAVA_VERSION="8"
+	echo "[info] JAVA_VERSION not defined,(via -e JAVA_VERSION), defaulting to Java version 'latest'" | ts '%Y-%m-%d %H:%M:%.S'
+	export JAVA_VERSION="latest"
 fi
 
 if [[ "${JAVA_VERSION}" == "8" ]]; then
-	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
+	ln -fs '/usr/lib/jvm/java-8-openjdk/jre/bin/java' '/usr/bin/java'
 	archlinux-java set java-8-openjdk/jre
 elif [[ "${JAVA_VERSION}" == "11" ]]; then
-	ln -fs /usr/lib/jvm/java-11-openjdk/bin/java /usr/bin/java
+	ln -fs '/usr/lib/jvm/java-11-openjdk/bin/java' '/usr/bin/java'
 	archlinux-java set java-11-openjdk
-elif [[ "${JAVA_VERSION}" == "16" ]]; then
-	ln -fs /usr/lib/jvm/java-16-openjdk/bin/java /usr/bin/java
-	archlinux-java set java-16-openjdk
+elif [[ "${JAVA_VERSION}" == "latest" ]]; then
+	ln -fs "/usr/lib/jvm/java-${latest_java_version}-openjdk/bin/java" '/usr/bin/java'
+	archlinux-java set java-${latest_java_version}-openjdk
 else
-	echo "[warn] Java version '${JAVA_VERSION}' not installed, defaulting to Java version 8" | ts '%Y-%m-%d %H:%M:%.S'
-	ln -fs /usr/lib/jvm/java-8-openjdk/jre/bin/java /usr/bin/java
-	archlinux-java set java-8-openjdk/jre
+	echo "[warn] Java version '${JAVA_VERSION}' not valid, defaulting to Java version 'latest" | ts '%Y-%m-%d %H:%M:%.S'
+	ln -fs "/usr/lib/jvm/java-${latest_java_version}-openjdk/bin/java" '/usr/bin/java'
+	archlinux-java set java-${latest_java_version}-openjdk
 fi
-export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
 
 export JAVA_INITIAL_HEAP_SIZE=$(echo "${JAVA_INITIAL_HEAP_SIZE}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 if [[ ! -z "${JAVA_INITIAL_HEAP_SIZE}" ]]; then
