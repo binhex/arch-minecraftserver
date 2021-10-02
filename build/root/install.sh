@@ -64,25 +64,23 @@ fi
 # custom
 ####
 
-# identify minecraft version type
-version_type=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' | jq -r .versions[0].type)
+# get json for latest 'release'
+release_json=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' |  jq '[.versions[] | select(.type=="release")][0]')
 
-if [[ "${version_type}" != "release" ]]; then
-	echo "[crit] Minecraft Java version type '${version_type}' is != to 'release', exiting script..."
-	exit 1
-fi
+# identify minecraft version
+id=$(echo "${release_json}" | jq -r .id)
+echo "[info] Minecraft Java version is '${id}'"
 
-# identify minecraft version id (version)
-version_id=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' | jq -r .versions[0].id)
-echo "[info] Minecraft Java version id is '${version_id}'"
+# identify minecraft download url json
+url_json=$(echo "${release_json}" | jq -r .url)
+echo "[info] Minecraft Java JSON URL is '${url_json}'"
 
-# identify minecraft version  url
-version_url=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' | jq -r .versions[0].url)
-url=$(rcurl.sh -s "${version_url}" | jq -r .downloads.server.url)
-echo "[info] Minecraft Java Version URL is '${url}'"
+# identify minecraft download url
+url_download=$(rcurl.sh -s "${url_json}" | jq -r .downloads.server.url)
+echo "[info] Minecraft Java download URL is '${url_download}'"
 
 # download compiled minecraft java server
-rcurl.sh -o "/tmp/minecraft_server.jar" "${url}"
+rcurl.sh -o "/tmp/minecraft_server.jar" "${url_download}"
 
 # move minecraft java server
 mkdir -p "/srv/minecraft" && mv "/tmp/minecraft_server.jar" "/srv/minecraft/"
