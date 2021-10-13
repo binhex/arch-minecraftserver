@@ -3,6 +3,9 @@
 # exit script if return code != 0
 set -e
 
+# release tag name from build arg, stripped of build ver using string manipulation
+release_tag_name="${1//-[0-9][0-9]/}"
+
 # build scripts
 ####
 
