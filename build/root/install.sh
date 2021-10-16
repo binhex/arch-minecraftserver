@@ -6,6 +6,11 @@ set -e
 # release tag name from build arg, stripped of build ver using string manipulation
 release_tag_name="${1//-[0-9][0-9]/}"
 
+if [[ -z "${release_tag_name}" ]]; then
+	echo "[warn] Release tag name from build arg is empty, exiting script..."
+	exit 1
+fi
+
 # build scripts
 ####
 
@@ -69,10 +74,6 @@ fi
 
 # get json for latest 'release'
 release_json=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' |  jq '[.versions[] | select(.type=="release")][0]')
-
-# identify minecraft version
-id=$(echo "${release_json}" | jq -r .id)
-echo "[info] Minecraft Java version is '${id}'"
 
 # identify minecraft download url json
 url_json=$(echo "${release_json}" | jq -r .url)
