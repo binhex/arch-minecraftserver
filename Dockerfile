@@ -33,6 +33,9 @@ EXPOSE 25565
 # expose ipv4 port for minecraft web ui console
 EXPOSE 8222/tcp
 
+# Security Patch for CVE-2021-44228
+ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
+
 # set permissions
 #################
 
