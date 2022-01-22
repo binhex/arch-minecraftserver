@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function copy_minecraft(){
 
 	if [[ -z "${CUSTOM_JAR_PATH}" || "${CUSTOM_JAR_PATH}" == '/config/minecraft/minecraft_server.jar' ]]; then
@@ -69,6 +68,51 @@ function accept_eula() {
 
 }
 
+function identify_minecraft_version() {
+
+	# get version from json
+	minecraft_version=$(unzip -p "${CUSTOM_JAR_PATH}" version.json | jq -r '.id')
+
+}
+
+# see https://help.minecraft.net/hc/en-us/articles/4416199399693-Security-Vulnerability-in-Minecraft-Java-Edition
+function patch_for_log4j() {
+
+	# identify version of minecraft
+	identify_minecraft_version
+
+	if [[ -z "${minecraft_version}" ]]; then
+
+		echo "[info] Unable to identify Minecraft version, skipping log4j mitigation"
+
+	else
+
+		# patch older versions of minecraft for log4j vulnerability
+		if echo "${minecraft_version}" | grep -q '1.17.*\|1.18.0'; then
+
+			echo "[info] Minecraft version '${minecraft_version}' detected, adding log4j mitigation for v1.17.*-v1.18.0 to start cmd..."
+			java_log4j_mitigation="-Dlog4j2.formatMsgNoLookups=true"
+
+		elif echo "${minecraft_version}" | grep -q '1.1[2-5].*\|1.16.[0-5]'; then
+
+			echo "[info] Minecraft version '${minecraft_version}' detected, adding log4j mitigation for v1.12.*-v1.16.5 to start cmd..."
+			java_log4j_mitigation="-Dlog4j.configurationFile=/home/nobody/log4j2_112-116.xml"
+
+		elif echo "${minecraft_version}" | grep -q '1.[7-9].*\|1.10.*\|1.11.[0-2]'; then
+
+			echo "[info] Minecraft version '${minecraft_version}' detected, adding log4j mitigation for v1.7.*-v1.11.2 to start cmd..."
+			java_log4j_mitigation="-Dlog4j.configurationFile=/home/nobody/log4j2_17-111.xml"
+
+		else
+
+			echo "[info] Minecraft version '${minecraft_version}' detected, no log4j mitigation required"
+			java_log4j_mitigation=""
+
+		fi
+
+	fi
+}
+
 function start_minecraft() {
 
 	# create logs sub folder to store screen output from console
@@ -76,7 +120,9 @@ function start_minecraft() {
 
 	# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
 	echo "[info] Starting Minecraft Java process..."
-	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} -jar ${CUSTOM_JAR_PATH} nogui"
+	set -x
+	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} ${java_log4j_mitigation} -jar ${CUSTOM_JAR_PATH} nogui"
+	set +x
 	echo "[info] Minecraft Java process is running"
 	if [[ ! -z "${STARTUP_CMD}" ]]; then
 		startup_cmd
@@ -102,6 +148,9 @@ copy_minecraft
 
 # accept eula
 accept_eula
+
+# patch for log4j
+patch_for_log4j
 
 # start minecraft
 start_minecraft

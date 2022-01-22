@@ -17,6 +17,9 @@ ARG release_tag_name
 # add run bash script
 ADD run/nobody/*.sh /home/nobody/
 
+# add pre-configured config files for log4j mitigation
+ADD config/nobody/ /home/nobody/
+
 # install app
 #############
 
