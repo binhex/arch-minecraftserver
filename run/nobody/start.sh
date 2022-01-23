@@ -88,17 +88,17 @@ function patch_for_log4j() {
 	else
 
 		# patch older versions of minecraft for log4j vulnerability
-		if echo "${minecraft_version}" | grep -q '1.17.*\|1.18.0'; then
+		if echo "${minecraft_version}" | grep -q '1.17.*\|1.18.0.*'; then
 
 			echo "[info] Minecraft version '${minecraft_version}' detected, adding log4j mitigation for v1.17.*-v1.18.0 to start cmd..."
 			java_log4j_mitigation="-Dlog4j2.formatMsgNoLookups=true"
 
-		elif echo "${minecraft_version}" | grep -q '1.1[2-5].*\|1.16.[0-5]'; then
+		elif echo "${minecraft_version}" | grep -q '1.1[2-5].*\|1.16.[0-5].*'; then
 
 			echo "[info] Minecraft version '${minecraft_version}' detected, adding log4j mitigation for v1.12.*-v1.16.5 to start cmd..."
 			java_log4j_mitigation="-Dlog4j.configurationFile=/home/nobody/log4j2_112-116.xml"
 
-		elif echo "${minecraft_version}" | grep -q '1.[7-9].*\|1.10.*\|1.11.[0-2]'; then
+		elif echo "${minecraft_version}" | grep -q '1.[7-9].*\|1.10.*\|1.11.[0-2].*'; then
 
 			echo "[info] Minecraft version '${minecraft_version}' detected, adding log4j mitigation for v1.7.*-v1.11.2 to start cmd..."
 			java_log4j_mitigation="-Dlog4j.configurationFile=/home/nobody/log4j2_17-111.xml"
