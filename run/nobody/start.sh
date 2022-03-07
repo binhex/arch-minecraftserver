@@ -118,10 +118,18 @@ function start_minecraft() {
 	# create logs sub folder to store screen output from console
 	mkdir -p /config/minecraft/logs
 
+  # allow custom scripts instead of forced jar - useful to run modern modpacks
+  if [[ -z "${CUSTOM_STARTUP_SCRIPT}" ]]; then
+    run_script="java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} ${java_log4j_mitigation} -jar ${CUSTOM_JAR_PATH} nogui"
+  else
+    chmod +x "${CUSTOM_STARTUP_SCRIPT}"
+    run_script="${CUSTOM_STARTUP_SCRIPT}"
+  fi
+
 	# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
 	echo "[info] Starting Minecraft Java process..."
 	set -x
-	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} ${java_log4j_mitigation} -jar ${CUSTOM_JAR_PATH} nogui"
+	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && ${run_script}"
 	set +x
 	echo "[info] Minecraft Java process is running"
 	if [[ ! -z "${STARTUP_CMD}" ]]; then
