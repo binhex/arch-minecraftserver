@@ -78,6 +78,8 @@ If you do **NOT** want world backups and/or purging of backups then set the valu
 
 Env var 'CUSTOM_JAR_PATH' is optional and allows you to define a specific jar to run, if not specified then the latest Mojang Minecraft jar will be used.
 
+Env var 'CUSTOM_STARTUP_SCRIPT' is optional and allows you to run a specific sh script instead of a jar file
+
 Env vars 'JAVA_INITIAL_HEAP_SIZE' value and 'JAVA_MAX_HEAP_SIZE' values must be a multiple of 1024 and greater than 2MB.
 
 User ID (PUID) and Group ID (PGID) can be found by issuing the following command for the user you want to run the container as:-
