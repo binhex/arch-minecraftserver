@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/dumb-init /bin/bash
 
 # script to do a manual backup of minecraft worlds in a safe manner, using the save commands via screen
 

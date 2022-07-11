@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/dumb-init /bin/bash
 
 # script to remove any old minecraft worlds backups with a creation date older than value for env var 'PURGE_BACKUP_DAYS'
 

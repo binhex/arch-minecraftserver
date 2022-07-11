@@ -6,6 +6,10 @@ on:
       tags:
         description: 'Enter tag name for test/dev image'
         default: 'test'
+      version:
+        description: 'Enter release version to download'
+        default: '1.19.2.02'
+        required: true
 
 jobs:
   gcr-dockerhub-build-publish:
@@ -66,6 +70,7 @@ jobs:
               --tag ghcr.io/${{ github.repository }}:${{ github.event.inputs.tags }} \
               --tag registry.gitlab.com/${{ github.repository }}:${{ steps.generate_temporary_tag_name.outputs.test_tag }} \
               --tag registry.gitlab.com/${{ github.repository }}:${{ github.event.inputs.tags }} \
+              --build-arg release_tag_name=${{ github.event.inputs.version }} \
               .
       - name: Run Tests
         shell: bash
