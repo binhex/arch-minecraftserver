@@ -8,7 +8,7 @@ on:
         default: 'test'
       version:
         description: 'Enter release version to download'
-        default: '1.19.2.02'
+        default: '1.19'
         required: true
 
 jobs:
