@@ -72,26 +72,7 @@ fi
 # custom
 ####
 
-# get json for latest 'release'
-release_json=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' |  jq '[.versions[] | select(.type=="release")][0]')
-
-# identify minecraft version
-id=$(echo "${release_json}" | jq -r .id)
-echo "[info] Minecraft Java version is '${id}'"
-
-# check release tag name matches version from json
-if [[ "${release_tag_name}" != "${id}" ]]; then
-	echo "[warn] Release tag name from build arg '${release_tag_name}' does not match id '${id}' from json, exiting script..."
-	exit 1
-fi
-
-# identify minecraft download url json
-url_json=$(echo "${release_json}" | jq -r .url)
-echo "[info] Minecraft Java JSON URL is '${url_json}'"
-
-# identify minecraft download url
-url_download=$(rcurl.sh -s "${url_json}" | jq -r .downloads.server.url)
-echo "[info] Minecraft Java download URL is '${url_download}'"
+url_download="https://piston-data.mojang.com/v1/objects/fdad42550c3f0bcdc52680dcebd5b712d32bc5d7/server.jar"
 
 # download compiled minecraft java server
 rcurl.sh -o "/tmp/minecraft_server.jar" "${url_download}"
