@@ -43,7 +43,7 @@ fi
 ####
 
 # define pacman packages
-pacman_packages="jre8-openjdk-headless jre11-openjdk-headless jre-openjdk-headless screen rsync"
+pacman_packages="jre8-openjdk-headless jre11-openjdk-headless jre-openjdk-headless screen rsync gnu-netcat"
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then

@@ -42,5 +42,7 @@ ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
 # set permissions
 #################
 
+HEALTHCHECK (nc -z localhost 8222 && nc -z localhost 25565) || exit 1
+
 # run script to set uid, gid and permissions
 CMD ["/bin/bash", "/usr/local/bin/init.sh"]
