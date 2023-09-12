@@ -26,7 +26,7 @@ docker run -d \
     -e WEBUI_PASS=<specify webui password> \
     -e WEBUI_CONSOLE_TITLE=<specify webui console title> \
     -e CUSTOM_JAR_PATH=<path to custom jar> \
-    -e JAVA_VERSION=<8|11|latest> \
+    -e JAVA_VERSION=<8|11|17|latest> \
     -e JAVA_INITIAL_HEAP_SIZE=<java initial heap size in megabytes> \
     -e JAVA_MAX_HEAP_SIZE=<java max heap size in megabytes> \
     -e JAVA_MAX_THREADS=<java max number of threads> \
