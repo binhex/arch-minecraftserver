@@ -53,10 +53,13 @@ source aur.sh
 ####
 
 # download gotty which gives us minecraft console in web ui
-if [[ "${TARGETARCH}" == "x86-64" ]]; then
+if [[ "${TARGETARCH}" == "amd64" ]]; then
 	github.sh --install-path /usr/bin --github-owner yudai --github-repo gotty --download-assets gotty_linux_amd64.tar.gz
-elif [[ "${TARGETARCH}" == "aarch64" ]]; then
+elif [[ "${TARGETARCH}" == "arm64" ]]; then
 	github.sh --install-path /usr/bin --github-owner yudai --github-repo gotty --download-assets gotty_linux_arm.tar.gz
+else
+	echo "[warn] Unable to identify valid architecture for Gotty tooling, exiting script..."
+	exit 1
 fi
 
 # custom
