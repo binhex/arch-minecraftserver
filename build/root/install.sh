@@ -4,9 +4,9 @@
 set -e
 
 # release tag name from build arg, stripped of build ver using string manipulation
-release_tag_name="${1//-[0-9][0-9]/}"
+RELEASETAG="${1//-[0-9][0-9]/}"
 
-if [[ -z "${release_tag_name}" ]]; then
+if [[ -z "${RELEASETAG}" ]]; then
 	echo "[warn] Release tag name from build arg is empty, exiting script..."
 	exit 1
 fi
@@ -80,8 +80,8 @@ id=$(echo "${release_json}" | jq -r .id)
 echo "[info] Minecraft Java version is '${id}'"
 
 # check release tag name matches version from json
-if [[ "${release_tag_name}" != "${id}" ]]; then
-	echo "[warn] Release tag name from build arg '${release_tag_name}' does not match id '${id}' from json, exiting script..."
+if [[ "${RELEASETAG}" != "${id}" ]]; then
+	echo "[warn] Release tag name from build arg '${RELEASETAG}' does not match id '${id}' from json, exiting script..."
 	exit 1
 fi
 
