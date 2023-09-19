@@ -11,8 +11,11 @@ ADD build/*.conf /etc/supervisor/conf.d/
 # add install bash script
 ADD build/root/*.sh /root/
 
-# get release tag name from build arg
+# release tag name from buildx arg
 ARG RELEASETAG
+
+# arch from buildx --platform, e.g. amd64
+ARG TARGETARCH
 
 # add run bash script
 ADD run/nobody/*.sh /home/nobody/
@@ -25,7 +28,7 @@ ADD config/nobody/ /home/nobody/
 
 # make executable and run bash scripts to install app
 RUN chmod +x /root/*.sh && \
-	/bin/bash /root/install.sh "${RELEASETAG}"
+	/bin/bash /root/install.sh "${RELEASETAG}" "${TARGETARCH}"
 
 # docker settings
 #################
