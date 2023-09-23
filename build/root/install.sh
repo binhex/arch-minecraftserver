@@ -19,11 +19,6 @@ if [[ -z "${TARGETARCH}" ]]; then
 	exit 1
 fi
 
-if [[ -z "${RELEASETAG}" ]]; then
-	echo "[warn] Release tag name from build arg is empty, exiting script..."
-	exit 1
-fi
-
 # build scripts
 ####
 
@@ -68,16 +63,6 @@ github.sh --install-path /usr/bin --github-owner sorenisanerd --github-repo gott
 
 # get json for latest 'release'
 release_json=$(rcurl.sh -s 'https://launchermeta.mojang.com/mc/game/version_manifest_v2.json' |  jq '[.versions[] | select(.type=="release")][0]')
-
-# identify minecraft version
-id=$(echo "${release_json}" | jq -r .id)
-echo "[info] Minecraft Java version is '${id}'"
-
-# check release tag name matches version from json
-if [[ "${RELEASETAG}" != "${id}" ]]; then
-	echo "[warn] Release tag name from build arg '${RELEASETAG}' does not match id '${id}' from json, exiting script..."
-	exit 1
-fi
 
 # identify minecraft download url json
 url_json=$(echo "${release_json}" | jq -r .url)
