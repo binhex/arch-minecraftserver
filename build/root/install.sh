@@ -273,6 +273,13 @@ else
 	export JAVA_MAX_THREADS="1"
 fi
 
+export JAVA_CUSTOM_ARGS=$(echo "${JAVA_CUSTOM_ARGS}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+if [[ ! -z "${JAVA_CUSTOM_ARGS}" ]]; then
+	echo "[info] JAVA_CUSTOM_ARGS defined as '${JAVA_CUSTOM_ARGS}'" | ts '%Y-%m-%d %H:%M:%.S'
+else
+	echo "[info] JAVA_CUSTOM_ARGS not defined,(via -e JAVA_CUSTOM_ARGS)" | ts '%Y-%m-%d %H:%M:%.S'
+fi
+
 export STARTUP_CMD=$(echo "${STARTUP_CMD}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 if [[ ! -z "${STARTUP_CMD}" ]]; then
 	echo "[info] STARTUP_CMD defined as '${STARTUP_CMD}'" | ts '%Y-%m-%d %H:%M:%.S'

@@ -121,7 +121,7 @@ function start_minecraft() {
 	# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
 	echo "[info] Starting Minecraft Java process..."
 	set -x
-	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} ${java_log4j_mitigation} -jar ${CUSTOM_JAR_PATH} nogui"
+	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} ${JAVA_CUSTOM_ARGS} ${java_log4j_mitigation} -jar ${CUSTOM_JAR_PATH} nogui"
 	set +x
 	echo "[info] Minecraft Java process is running"
 	if [[ ! -z "${STARTUP_CMD}" ]]; then
