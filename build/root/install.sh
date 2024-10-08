@@ -81,6 +81,12 @@ rcurl.sh -o "/tmp/minecraft_server.jar" "${url_download}"
 # move minecraft java server
 mkdir -p "/srv/minecraft" && mv "/tmp/minecraft_server.jar" "/srv/minecraft/"
 
+# enable mouse and keyboard scrolling for screen
+cat <<EOF > /home/nobody/.screenrc
+# Enable mouse scrolling and scroll bar history scrolling
+termcapinfo xterm* ti@:te@
+EOF
+
 # container perms
 ####
 
