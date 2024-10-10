@@ -1,5 +1,8 @@
 #!/usr/bin/dumb-init /bin/bash
 
+# source in script to wait for child processes to exit
+source /usr/local/bin/waitproc.sh
+
 function copy_minecraft(){
 
 	if [[ -z "${CUSTOM_JAR_PATH}" || "${CUSTOM_JAR_PATH}" == '/config/minecraft/minecraft_server.jar' ]]; then
@@ -120,7 +123,7 @@ function start_minecraft() {
 
 	# run screen attached to minecraft (daemonized, non-blocking) to allow users to run commands in minecraft console
 	echo "[info] Starting Minecraft Java process..."
-	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && while true; do java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} ${JAVA_CUSTOM_ARGS} ${java_log4j_mitigation} -jar ${CUSTOM_JAR_PATH} nogui; done"
+	screen -L -Logfile '/config/minecraft/logs/screen.log' -d -S minecraft -m bash -c "cd /config/minecraft && trap 'exit 0' SIGINT SIGTERM; while true; do java -Xms${JAVA_INITIAL_HEAP_SIZE} -Xmx${JAVA_MAX_HEAP_SIZE} -XX:ParallelGCThreads=${JAVA_MAX_THREADS} ${JAVA_CUSTOM_ARGS} ${java_log4j_mitigation} -jar ${CUSTOM_JAR_PATH} nogui; done"
 	echo "[info] Minecraft Java process is running"
 	if [[ -n "${STARTUP_CMD}" ]]; then
 		startup_cmd

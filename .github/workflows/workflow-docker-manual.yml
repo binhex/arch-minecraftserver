@@ -3,9 +3,11 @@ name: workflow-docker-manual
 on:
   workflow_dispatch:
     inputs:
-      tags:
-        description: 'Enter tag name for test/dev image'
+      docker_tag:
+        description: 'Enter the Docker tag name'
         default: 'test'
+      release_tag:
+        description: 'Enter the application version'
 
 jobs:
   gcr-dockerhub-build-publish:
@@ -74,7 +76,7 @@ jobs:
             load: true
             tags: ghcr.io/${{ github.repository }}:${{ steps.generate_temporary_tag_name.outputs.test_tag }}
             build-args: |
-              RELEASETAG=${{ github.event.inputs.tags }}
+              RELEASETAG=${{ github.event.inputs.release_tag }}
           attempt_limit: 3
           attempt_delay: 600000
       - name: Run tests using previously built image
@@ -93,8 +95,8 @@ jobs:
             context: .
             platforms: linux/amd64
             push: true
-            tags: ${{ github.repository }}:${{ github.event.inputs.tags }}, quay.io/${{ github.repository }}:${{ github.event.inputs.tags }}, ghcr.io/${{ github.repository }}:${{ github.event.inputs.tags }}, registry.gitlab.com/${{ github.repository }}:${{ github.event.inputs.tags }}
+            tags: ${{ github.repository }}:${{ github.event.inputs.docker_tag }}, quay.io/${{ github.repository }}:${{ github.event.inputs.docker_tag }}, ghcr.io/${{ github.repository }}:${{ github.event.inputs.docker_tag }}, registry.gitlab.com/${{ github.repository }}:${{ github.event.inputs.docker_tag }}
             build-args: |
-              RELEASETAG=${{ github.event.inputs.tags }}
+              RELEASETAG=${{ github.event.inputs.release_tag }}
           attempt_limit: 3
           attempt_delay: 600000
