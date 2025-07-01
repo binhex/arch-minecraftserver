@@ -1,18 +1,27 @@
-**Application**
+# Application
 
 [Minecraft Server](https://www.minecraft.net/en-us/download/server/)
 
-**Description**
+## Description
 
-Minecraft is a sandbox video game created by Swedish game developer Markus Persson and released by Mojang in 2011. The game allows players to build with a variety of different blocks in a 3D procedurally generated world, requiring creativity from players. Other activities in the game include exploration, resource gathering, crafting, and combat. Multiple game modes that change gameplay are available, including—but not limited to—a survival mode, in which players must acquire resources to build the world and maintain health, and a creative mode, where players have unlimited resources to build with.
+Minecraft is a sandbox video game created by Swedish game developer Markus
+Persson and released by Mojang in 2011. The game allows players to build with a
+variety of different blocks in a 3D procedurally generated world, requiring
+creativity from players. Other activities in the game include exploration,
+resource gathering, crafting, and combat. Multiple game modes that change
+gameplay are available, including—but not limited to—a survival mode, in which
+players must acquire resources to build the world and maintain health, and a
+creative mode, where players have unlimited resources to build with.
 
-**Build notes**
+## Build notes
 
 Latest stable Minecraft Java release from Mojang.
 
-**Usage**
-```
+## Usage
+
+```bash
 docker run -d \
+
     -p <host port>:8222/tcp \
     -p <host port>:25565 \
     --name=<container name> \
@@ -35,20 +44,25 @@ docker run -d \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
     -e PGID=<gid for user> \
+
     binhex/arch-minecraftserver
+
 ```
 
-Please replace all user variables in the above command defined by <> with the correct values.
+Please replace all user variables in the above command defined by <> with the
+correct values.
 
-**Access Minecraft Server console**
+## Access Minecraft Server console
 
 Requires `-e ENABLE_WEBUI_CONSOLE=yes`
 
 `http://<host ip>:8222`
 
-**Example**
-```
+## Example
+
+```bash
 docker run -d \
+
     -p 8222:8222/tcp \
     -p 25565:25565 \
     --name=minecraftserver \
@@ -71,22 +85,30 @@ docker run -d \
     -e UMASK=000 \
     -e PUID=0 \
     -e PGID=0 \
+
     binhex/arch-minecraftserver
-```
-
-**Notes**
-
-If you do **NOT** want world backups and/or purging of backups then set the value to '0' for env vars 'CREATE_BACKUP_HOURS' and/or 'PURGE_BACKUP_DAYS'.
-
-Env var 'CUSTOM_JAR_PATH' is optional and allows you to define a specific jar to run, if not specified then the latest Mojang Minecraft jar will be used.
-
-Env vars 'JAVA_INITIAL_HEAP_SIZE' value and 'JAVA_MAX_HEAP_SIZE' values must be a multiple of 1024 and greater than 2MB.
-
-User ID (PUID) and Group ID (PGID) can be found by issuing the following command for the user you want to run the container as:-
 
 ```
+
+## Notes
+
+If you do **NOT** want world backups and/or purging of backups then set the
+value to '0' for env vars 'CREATE_BACKUP_HOURS' and/or 'PURGE_BACKUP_DAYS'.
+
+Env var 'CUSTOM_JAR_PATH' is optional and allows you to define a specific jar to
+run, if not specified then the latest Mojang Minecraft jar will be used.
+
+Env vars 'JAVA_INITIAL_HEAP_SIZE' value and 'JAVA_MAX_HEAP_SIZE' values must be
+a multiple of 1024 and greater than 2MB.
+
+User ID (PUID) and Group ID (PGID) can be found by issuing the following command
+for the user you want to run the container as:-
+
+```bash
 id <username>
+
 ```
+
 ___
 If you appreciate my work, then please consider buying me a beer  :D
 
