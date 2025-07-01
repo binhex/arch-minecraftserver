@@ -21,7 +21,6 @@ Latest stable Minecraft Java release from Mojang.
 
 ```bash
 docker run -d \
-
     -p <host port>:8222/tcp \
     -p <host port>:25565 \
     --name=<container name> \
@@ -44,9 +43,7 @@ docker run -d \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
     -e PGID=<gid for user> \
-
     binhex/arch-minecraftserver
-
 ```
 
 Please replace all user variables in the above command defined by <> with the
@@ -62,7 +59,6 @@ Requires `-e ENABLE_WEBUI_CONSOLE=yes`
 
 ```bash
 docker run -d \
-
     -p 8222:8222/tcp \
     -p 25565:25565 \
     --name=minecraftserver \
@@ -85,9 +81,7 @@ docker run -d \
     -e UMASK=000 \
     -e PUID=0 \
     -e PGID=0 \
-
     binhex/arch-minecraftserver
-
 ```
 
 ## Notes
@@ -106,7 +100,6 @@ for the user you want to run the container as:-
 
 ```bash
 id <username>
-
 ```
 
 ___
