@@ -36,6 +36,13 @@ RUN chmod +x /root/*.sh && \
 # Security Patch for CVE-2021-44228
 ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
 
+# healthcheck
+#############
+
+# ensure internet connectivity, used primarily when sharing network with other conainers
+HEALTHCHECK --interval=1m --timeout=3s \
+  CMD curl -s https://github.com &>/dev/null || kill 1
+
 # set permissions
 #################
 
