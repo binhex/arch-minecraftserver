@@ -39,9 +39,13 @@ ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
 # healthcheck
 #############
 
-# ensure internet connectivity, used primarily when sharing network with other conainers
-HEALTHCHECK --interval=1m --timeout=3s \
-  CMD curl -s https://github.com &>/dev/null || kill 1
+# ensure internet connectivity, used primarily when sharing network with other containers
+HEALTHCHECK \
+	--interval=2m \
+	--timeout=30s \
+	--retries=5 \
+	--start-period=2m \
+  CMD /usr/local/bin/shell/docker/healthcheck.sh || exit 1
 
 # set permissions
 #################
