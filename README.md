@@ -40,6 +40,8 @@ docker run -d \
     -e JAVA_MAX_THREADS=<java max number of threads> \
     -e JAVA_CUSTOM_ARGS=<java custom arguments> \
     -e STARTUP_CMD=<minecraft console command to execute on startup> \
+    -e HEALTHCHECK_COMMAND=<command> \
+    -e HEALTHCHECK_ACTION=<action> \
     -e UMASK=<umask for created files> \
     -e PUID=<uid for user> \
     -e PGID=<gid for user> \
