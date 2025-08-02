@@ -43,7 +43,11 @@ refresh.sh
 pacman_packages="jre8-openjdk-headless jre11-openjdk-headless jre17-openjdk-headless jre21-openjdk-headless jre-openjdk-headless rsync"
 
 # install compiled packages using pacman
-if [[ ! -z "${pacman_packages}" ]]; then
+if [[ -n "${pacman_packages}" ]]; then
+	# arm64 currently targetting aor not archive, so we need to update the system first
+	if [[ "${TARGETARCH}" == "arm64" ]]; then
+		pacman -Syu --noconfirm
+	fi
 	pacman -S --needed $pacman_packages --noconfirm
 fi
 
