@@ -64,7 +64,7 @@ source aur.sh
 ####
 
 # download gotty which gives us minecraft console in web ui
-github.sh --install-path /usr/bin --github-owner sorenisanerd --github-repo gotty --download-assets "gotty_v1.5.0_linux_${TARGETARCH}.tar.gz"
+github.sh --install-path /usr/bin --github-owner sorenisanerd --github-repo gotty --download-assets "gotty.*linux_${TARGETARCH}.tar.gz" --query-type 'release'
 
 # custom
 ####
