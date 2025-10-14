@@ -80,7 +80,7 @@ docker run -d \
     -e JAVA_MAX_HEAP_SIZE=1024M \
     -e JAVA_MAX_THREADS=1 \
     -e JAVA_CUSTOM_ARGS='' \
-    -e STARTUP_CMD=gamerule reducedDebugInfo true \
+    -e STARTUP_CMD='gamerule reducedDebugInfo true' \
     -e UMASK=000 \
     -e PUID=0 \
     -e PGID=0 \
