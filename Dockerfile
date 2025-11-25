@@ -45,7 +45,7 @@ ENV LOG4J_FORMAT_MSG_NO_LOOKUPS=true
 # ensure internet connectivity, used primarily when sharing network with other containers
 HEALTHCHECK \
 	--interval=2m \
-	--timeout=120s \
+	--timeout=2m \
 	--retries=5 \
 	--start-period=2m \
   CMD /usr/local/bin/system/scripts/docker/healthcheck.sh || exit 1
